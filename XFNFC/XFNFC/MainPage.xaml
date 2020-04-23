@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="XFNFC.MainPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:nfc1="clr-namespace:Shiny.Nfc;assembly=Shiny.Nfc"
+    Title="NFC"
+    mc:Ignorable="d">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding Clear}" Text="Clear" />
+    </ContentPage.ToolbarItems>
+
+    <StackLayout>
+        <!--  Place new controls here  -->
+        <Label
+            HorizontalOptions="Center"
+            Text="Welcome to Xamarin.Forms!"
+            VerticalOptions="CenterAndExpand" />
+        <Button Command="{Binding CheckPermission}" Text="Check Access" />
+        <Label Text="{Binding Access, StringFormat='Check Access: {0}'}" />
+        <Button Command="{Binding Listen}" Text="Start Listening">
+            <Button.Triggers>
+                <DataTrigger
+                    Binding="{Binding IsListening}"
+                    TargetType="Button"
+                    Value="True">
+                    <Setter Property="Text" Value="Stop Listening" />
+                </DataTrigger>
+                <DataTrigger
+                    Binding="{Binding IsListening}"
+                    TargetType="Button"
+                    Value="False">
+                    <Setter Property="Text" Value="Start Listening" />
+                </DataTrigger>
+            </Button.Triggers>
+        </Button>
+        <Button Command="{Binding Clear}" Text="Clear" />
+        <CollectionView
+            HorizontalOptions="FillAndExpand"
+            ItemsSource="{Binding NDefRecords}"
+            VerticalOptions="FillAndExpand">
+            <CollectionView.EmptyView>
+                <Label Text="No Records Found" />
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="nfc1:NDefRecord">
+                    <StackLayout>
+                        <Label Text="{Binding Payload}" />
+                        <Label Text="{Binding PayloadType}" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+
+</ContentPage>
